@@ -1,9 +1,18 @@
+import { useDispatch } from "react-redux";
+import { nextPage } from "../../redux/cars/slice";
 import css from "./LoadMore.modules.css";
 
-export const LoadMore = ({ onClick }) => {
+export const LoadMore = () => {
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(nextPage());
+  };
   return (
-    <button className={css.btn} onClick={onClick} type="button">
-      Load More
-    </button>
+    <div>
+      <button className={css.btn} onClick={handleClick} type="button">
+        Load More
+      </button>
+    </div>
   );
 };
