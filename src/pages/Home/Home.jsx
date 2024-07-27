@@ -10,7 +10,7 @@ export const Home = () => {
       className="hero min-h-screen"
       style={{
         backgroundImage:
-          "url(https://media.licdn.com/dms/image/C561BAQEffhkajkAH8w/company-background_10000/0/1584307203232/jesses_garage_european_auto_repair_cover?e=2147483647&v=beta&t=lIWtpLB0w_skxRZn5YwfE6ujHpAxJ1K3un-5dxkajcg)",
+          "url(https://media.autoexpress.co.uk/image/private/s--X-WVjvBW--/f_auto,t_content-image-full-desktop@1/v1562241806/autoexpress/2/94/mclaren-625c_01_0.jpg)",
       }}
     >
       <div className="hero-overlay p-11">
@@ -19,12 +19,12 @@ export const Home = () => {
             <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               Welcome to us!
             </h1>
-            <p className="py-4 text-lg leading-8 text-gray-600">
+            <p className="py-4 text-lg leading-8 text-gray-900">
               We will help you to choose any type of car for rent, please FOLLOW
               us bellow.
             </p>
             <div className=" flex items-center justify-center gap-x-6">
-              <Link to="/catalog" className="btn btn-active btn-secondary">
+              <Link to="/catalog" className="btn btn-active btn-warning">
                 Get Started
               </Link>
             </div>
