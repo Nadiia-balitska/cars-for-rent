@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { nextPage } from "../../redux/cars/slice";
-import css from "./LoadMore.modules.css";
+import css from "./LoadMore.module.css";
 
 export const LoadMore = () => {
   const dispatch = useDispatch();

@@ -13,30 +13,22 @@ const initialState = {
   error: null,
   favorites: [],
   totalPage: null,
+  loadMore: false,
 };
 
 const carsSlice = createSlice({
   name: "cars",
   initialState,
 
-  selectors: {
-    selectCars: (state) => state.cars,
-    selectFavorite: (state) => state.favorites,
-    selectPage: (state) => state.page,
-    selectTotalPage: (state) => state.totalPage,
-    selectLoading: (state) => state.loading,
-    selectError: (state) => state.error,
-  },
-
   reducers: {
     like: (state, action) => {
-      const cars = state.cars.find((car) => car.id === action.payload);
-      if (state.favorites.some((car) => car.id === cars)) {
+      const car = state.cars.find((car) => car.id === action.payload);
+      if (state.favorites.some((favCar) => favCar.id === car.id)) {
         state.favorites = state.favorites.filter(
-          (car) => car.id !== action.payload
+          (favCar) => favCar.id !== car.id
         );
       } else {
-        state.favorites.push(cars);
+        state.favorites.push(car);
       }
     },
     nextPage: (state) => {
@@ -52,14 +44,17 @@ const carsSlice = createSlice({
     builder
       .addCase(fetchCarsThunk.fulfilled, (state, action) => {
         state.cars = action.payload;
+        state.loading = false;
       })
       .addCase(addFavoriteCarThunk.fulfilled, (state, action) => {
         state.favorites.push(action.payload);
+        state.loading = false;
       })
       .addCase(removeFavoriteCarThunk.fulfilled, (state, action) => {
         state.favorites = state.favorites.filter(
-          (item) => item.id !== action.payload
+          (item) => item.id !== action.payload.id
         );
+        state.loading = false;
       })
       .addMatcher(
         isAnyOf(
@@ -69,16 +64,6 @@ const carsSlice = createSlice({
         ),
         (state) => {
           state.loading = true;
-        }
-      )
-      .addMatcher(
-        isAnyOf(
-          fetchCarsThunk.fulfilled,
-          addFavoriteCarThunk.fulfilled,
-          removeFavoriteCarThunk.fulfilled
-        ),
-        (state) => {
-          state.loading = false;
         }
       )
       .addMatcher(
@@ -95,8 +80,19 @@ const carsSlice = createSlice({
   },
 });
 
+export const carsReducer = carsSlice.reducer;
+export const { reset, nextPage, like } = carsSlice.actions;
+
+export const selectCars = (state) => state.cars.cars;
+export const selectFavorite = (state) => state.cars.favorites;
+export const selectPage = (state) => state.cars.page;
+export const selectLoading = (state) => state.cars.loading;
+export const selectError = (state) => state.cars.error;
+export const selectTotalPage = (state) => state.cars.totalPage;
+export const selectLoadMore = (state) => state.cars.loadMore;
+
 export const selectFilteredMemo = createSelector(
-  [carsSlice.selectors.selectCars, selectNameFilter],
+  [selectCars, selectNameFilter],
   (cars, filter) => {
     return cars.filter((car) => {
       return (
@@ -107,14 +103,3 @@ export const selectFilteredMemo = createSelector(
     });
   }
 );
-
-export const carsReducer = carsSlice.reducer;
-export const { reset, nextPage, like } = carsSlice.actions;
-export const {
-  selectCar,
-  selectFavorite,
-  selectPage,
-  selectLoading,
-  selectError,
-  selectTotalPage,
-} = carsSlice.selectors;

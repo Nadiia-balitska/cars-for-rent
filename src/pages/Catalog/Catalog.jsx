@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { LoadMore } from "../../components/LoadMore/LoadMore";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { List } from "../../components/List/List";
 import { Loader } from "../../components/Loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectFilteredMemo,
+  selectLoading,
   selectPage,
   selectTotalPage,
 } from "../../redux/cars/slice";
@@ -13,36 +13,38 @@ import {
   fetchCarsThunk,
   fetchFavoriteThunk,
 } from "../../redux/cars/operations";
-import { selectNameFilter } from "../../redux/filters/slice";
 import { Modal } from "../../components/Modal/Modal";
+import { selectNameFilter } from "../../redux/filters/slice";
 
 export const Catalog = () => {
-  const [isLoading] = useState(false);
   const [selectCar, setSelectCar] = useState(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [showLoadMore, setShowLoadMore] = useState(false);
 
   const dispatch = useDispatch();
-  const cars = useSelector(selectNameFilter);
+  const make = useSelector(selectNameFilter);
+  const cars = useSelector(selectFilteredMemo);
+
   const page = useSelector(selectPage);
-  const filter = useSelector(selectFilteredMemo);
   const totalPage = useSelector(selectTotalPage);
+  const isLoading = useSelector(selectLoading);
+  // const loadMore = useSelector(selectLoadMore);
 
   useEffect(() => {
-    dispatch(fetchCarsThunk({ page, filter }));
-    setShowLoadMore(page < Math.ceil(totalPage / 12));
-  }, [dispatch, page, totalPage, filter]);
+    dispatch(fetchCarsThunk({ page, make })).then(() => {
+      setShowLoadMore(page < Math.ceil(totalPage / 12));
+    });
+  }, [dispatch, page, make, totalPage]);
 
   useEffect(() => {
     dispatch(fetchFavoriteThunk());
-    setShowLoadMore(page < Math.ceil(totalPage / 12));
-  }, [totalPage, page, dispatch]);
+  }, [dispatch]);
 
   const handleModalOpen = (img) => {
     setIsOpenModal(true);
     setSelectCar(img);
   };
-  const closeModal = () => {
+  const handleModalClose = () => {
     setIsOpenModal(false);
     setSelectCar(null);
   };
@@ -50,18 +52,21 @@ export const Catalog = () => {
   return (
     <div>
       <SearchBar />
-
-      {cars.length ? (
-        <List handleModalOpen={handleModalOpen} />
+      {isLoading ? (
+        <Loader />
       ) : (
-        <p>We do not have such type of cars </p>
+        <List
+          showLoadMore={showLoadMore}
+          cars={cars}
+          handleModalOpen={handleModalOpen}
+        />
       )}
-      {showLoadMore && <LoadMore />}
-      {isLoading && <Loader />}
+
+      {/* {showLoadMore && <LoadMore />} */}
       {isOpenModal && (
         <Modal
           modalIsOpen={isOpenModal}
-          closeModal={closeModal}
+          closeModal={handleModalClose}
           selectImg={selectCar}
         />
       )}
