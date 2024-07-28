@@ -1,6 +1,7 @@
 Hello, here id my project:
 
 The main page:
+It is pagination as well bellow
 ![image](https://github.com/user-attachments/assets/f1bc85ed-8d5c-473f-a364-f471c0c47a00)
 
 Catalogue page:
@@ -12,6 +13,7 @@ Favorites page:
 Modal window:
 You can close it using backdrop, ESC or (×) button
 ![image](https://github.com/user-attachments/assets/6ec570f3-41e4-4d36-a98a-92db47590bff)
+
 
 
 
