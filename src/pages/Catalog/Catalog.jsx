@@ -41,23 +41,13 @@ export const Catalog = () => {
     dispatch(fetchFavoriteThunk());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (page > 1) {
-  //     dispatch(totalPage());
-  //     const cardHeight = document.querySelector(".one_card")?.clientHeight || 0;
-  //     window.scrollBy({
-  //       top: cardHeight,
-  //       behavior: "smooth",
-  //     });
-  //   }
-  // }, [dispatch, page]);
-
   const handleClick = () => {
     dispatch(nextPage());
     dispatch(totalPage());
 
     dispatch(fetchCarsThunk({ page: page + 1, make })).then(() => {
-      const cardHeight = document.querySelector(".one_card")?.clientHeight || 0;
+      const cardHeight =
+        document.querySelector("li[one_card]")?.clientHeight || 0;
       setTimeout(() => {
         window.scrollBy({ top: cardHeight, behavior: "smooth" });
       }, 500);
@@ -66,7 +56,10 @@ export const Catalog = () => {
 
   return (
     <div>
-      <SearchBar />
+      <div className="flex ml-3">
+        <SearchBar />
+      </div>
+
       {isLoading ? (
         <Loader />
       ) : (
