@@ -1,8 +1,20 @@
-# React + Vite
+Hello, here id my project:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The main page:
+It is pagination as well bellow
+![image](https://github.com/user-attachments/assets/f1bc85ed-8d5c-473f-a364-f471c0c47a00)
 
-Currently, two official plugins are available:
+Catalogue page:
+![image](https://github.com/user-attachments/assets/d9c6cd1d-8571-44d0-8254-94899ecab69e)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Favorites page:
+![image](https://github.com/user-attachments/assets/27d50472-e55c-4492-b458-073648bdd07c)
+
+Modal window:
+You can close it using backdrop, ESC or (×) button
+![image](https://github.com/user-attachments/assets/6ec570f3-41e4-4d36-a98a-92db47590bff)
+
+
+
+
+
