@@ -4,6 +4,7 @@ import { List } from "../../components/List/List";
 import { Loader } from "../../components/Loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  nextPage,
   selectFilteredMemo,
   selectLoading,
   selectPage,
@@ -15,6 +16,7 @@ import {
 } from "../../redux/cars/operations";
 import { Modal } from "../../components/Modal/Modal";
 import { selectNameFilter } from "../../redux/filters/slice";
+import { LoadMore } from "../../components/LoadMore/LoadMore";
 
 export const Catalog = () => {
   const [selectCar, setSelectCar] = useState(null);
@@ -48,6 +50,9 @@ export const Catalog = () => {
     setIsOpenModal(false);
     setSelectCar(null);
   };
+  const handleClick = () => {
+    dispatch(nextPage());
+  };
 
   return (
     <div>
@@ -62,7 +67,8 @@ export const Catalog = () => {
         />
       )}
 
-      {/* {showLoadMore && <LoadMore />} */}
+      {showLoadMore && <LoadMore onClick={handleClick} />}
+
       {isOpenModal && (
         <Modal
           modalIsOpen={isOpenModal}

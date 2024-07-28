@@ -1,4 +1,5 @@
 import { LikeBtn } from "../LikeBtn/LikeBtn";
+import { Modal } from "../Modal/Modal";
 
 export const Card = ({ car, handleModalOpen, key }) => {
   return (
@@ -20,7 +21,7 @@ export const Card = ({ car, handleModalOpen, key }) => {
               <li>{car?.make}</li>
               <li className="text-[#dbca07]">{car?.model},</li>
               <li>{car?.year}</li>
-              <li className="flex-row justify-end">{car.rentalPrice}</li>
+              <li className="flex-row ">{car.rentalPrice}</li>
             </ul>
 
             <ul className="flex flex-wrap justify-center gap-x-3 list">
@@ -28,20 +29,21 @@ export const Card = ({ car, handleModalOpen, key }) => {
               <li>{car.make} |</li>
               <li>{car.id} |</li>
               <li>
-                {car.functionalities.map((item) => (
-                  <p key={item.id}>{item}</p>
+                {car.functionalities.map((item, id) => (
+                  <p key={id}>{item}</p>
                 ))}
               </li>
             </ul>
-            <div className="card-actions absolute">
-              <button
+            <div className=" top-[465px] btn-warning card-actions absolute">
+              <Modal car={car} />
+              {/* <button
                 onClick={() => {
                   handleModalOpen(car);
                 }}
                 className="btn relative top-48 btn-warning"
               >
                 Learn More
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -49,28 +51,3 @@ export const Card = ({ car, handleModalOpen, key }) => {
     </>
   );
 };
-
-// Card.propTypes = {
-//   car: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.string.isRequired,
-//       year: PropTypes.number.isRequired,
-//       make: PropTypes.string.isRequired,
-//       model: PropTypes.string.isRequired,
-//       type: PropTypes.string.isRequired,
-//       img: PropTypes.string.isRequired,
-//       description: PropTypes.string.isRequired,
-//       fuelConsumption: PropTypes.number.isRequired,
-//       engineSize: PropTypes.number.isRequired,
-//       accessories: PropTypes.arrayOf(PropTypes.string).isRequired,
-//       functionalities: PropTypes.arrayOf(PropTypes.string).isRequired,
-//       rentalPrice: PropTypes.number.isRequired,
-//       rentalCompany: PropTypes.string.isRequired,
-//       address: PropTypes.string.isRequired,
-//       rentalConditions: PropTypes.string.isRequired,
-//       mileage: PropTypes.number.isRequired,
-//     })
-//   ).isRequired,
-//   handleModalOpen: PropTypes.func.isRequired,
-//   handleModalOpen: PropTypes.number.isRequired,
-// };

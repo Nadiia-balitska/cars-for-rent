@@ -9,10 +9,8 @@ export const LoadMore = () => {
     dispatch(nextPage());
   };
   return (
-    <div>
-      <button className={css.btn} onClick={handleClick} type="button">
-        Load More
-      </button>
-    </div>
+    <button className={css.btn} onClick={handleClick} type="button">
+      Load More
+    </button>
   );
 };
