@@ -1,6 +1,17 @@
-export const LikeBtn = () => {
+import { useDispatch, useSelector } from "react-redux";
+import { like, selectFavorite } from "../../redux/cars/slice";
+
+export const LikeBtn = ({ car }) => {
+  const favorites = useSelector(selectFavorite);
+  const dispatch = useDispatch();
   return (
-    <button className="btn">
+    <button
+      type="button"
+      onClick={() => {
+        dispatch(like(car));
+      }}
+      className="btn w-16 btn-ghost flex-row "
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-6 w-6"

@@ -12,9 +12,10 @@ export const SearchBar = () => {
   return (
     <select
       onChange={(e) => handleChange(e.target.value || "")}
+      defaultValue=""
       className="select select-warning ml-5 flex justify-center align-middle mt-24 w-full max-w-xs"
     >
-      <option disabled selected>
+      <option disabled value="">
         Choose model
       </option>
       {makes.map((model, id) => (

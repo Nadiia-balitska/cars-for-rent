@@ -22,8 +22,8 @@ export const Catalog = () => {
   const [showLoadMore, setShowLoadMore] = useState(false);
 
   const dispatch = useDispatch();
-  const make = useSelector(selectNameFilter);
   const cars = useSelector(selectFilteredMemo);
+  const make = useSelector(selectNameFilter);
 
   const page = useSelector(selectPage);
   const totalPage = useSelector(selectTotalPage);
