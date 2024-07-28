@@ -6,12 +6,21 @@ import {
 } from "./operations";
 import { selectNameFilter } from "../filters/slice";
 
+const saveFavoritesToLocalStorage = (favorites) => {
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+};
+
+const loadFavoritesFromLocalStorage = () => {
+  const savedFavorites = localStorage.getItem("favorites");
+  return savedFavorites ? JSON.parse(savedFavorites) : [];
+};
+
 const initialState = {
   page: 1,
   cars: [],
   loading: false,
   error: null,
-  favorites: [],
+  favorites: loadFavoritesFromLocalStorage(),
   totalPage: null,
   loadMore: true,
 };
@@ -31,6 +40,7 @@ const carsSlice = createSlice({
         );
       } else {
         state.favorites.push(action.payload);
+        saveFavoritesToLocalStorage(state.favorites);
       }
     },
     nextPage: (state) => {
@@ -40,15 +50,15 @@ const carsSlice = createSlice({
       state.cars = [];
       state.page = 1;
     },
+    totalPage: (state) => {
+      state.totalPage = Math.ceil(state.cars.length / 12);
+    },
   },
 
   extraReducers: (builder) => {
     builder
       .addCase(fetchCarsThunk.fulfilled, (state, action) => {
-        // state.cars = [...state.cars, ...action.payload.cars];
-        // state.totalPage = action.payload.totalPage;
         state.loading = false;
-        // state.loadMore = state.page < state.totalPage;
         if (action.payload.length > 0) {
           state.cars =
             state.page === 1
@@ -94,7 +104,7 @@ const carsSlice = createSlice({
 });
 
 export const carsReducer = carsSlice.reducer;
-export const { reset, nextPage, like } = carsSlice.actions;
+export const { reset, totalPage, nextPage, like } = carsSlice.actions;
 
 export const selectCars = (state) => state.cars.cars;
 export const selectFavorite = (state) => state.cars.favorites;

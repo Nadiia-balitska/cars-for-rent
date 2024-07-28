@@ -1,4 +1,4 @@
-export const Modal = ({ car }) => {
+export const Modal = ({ car, formattedMileage }) => {
   const openModal = () => {
     const modal = document.getElementById(`modal_${car.id}`);
     if (modal) {
@@ -43,8 +43,8 @@ export const Modal = ({ car }) => {
           <div>
             <figure className="px-10 pt-10">
               <img
-                src={car.img}
-                alt={car.description}
+                src={car?.img}
+                alt={car?.description}
                 className="rounded-xl h-[160px]"
               />
             </figure>
@@ -53,30 +53,42 @@ export const Modal = ({ car }) => {
                 <li>{car?.make}</li>
                 <li className="text-[#dbca07]">{car?.model},</li>
                 <li>{car?.year}</li>
-                <li className="flex-row ml-28 ">{car.rentalPrice}</li>
+                <li className="flex-row ml-28 ">{car?.rentalPrice}</li>
               </ul>
               <ul className="flex flex-wrap justify-center gap-1 ">
-                <li>| {car.type} |</li>
-                <li> {car.make} |</li>
-                <li> {car.id} |</li>
-                <li className="flex flex-wrap ">
-                  {car.functionalities.map((item, id) => (
-                    <p key={id}>| {item} |</p>
-                  ))}
-                </li>
-                <li>| Fuel Consumption: {car.fuelConsumption} |</li>
-                <li>| Engine Size: {car.engineSize} |</li>
+                <h2 className="flex flex-wrap justify-center gap-x-3 list">
+                  {car?.type} |{car.make} |{car.id}| fuel consumption:
+                  {car.fuelConsumption}| engine size: {car.engineSize}
+                </h2>
+
+                <h3 className="outline mt-2 mb-2 stroke-slate-600">
+                  {formattedMileage} MILES
+                </h3>
+
+                {car.functionalities && car.functionalities.length > 0 && (
+                  <ul className="flex text-sm justify-start gap-1 ">
+                    {car.functionalities.map((func, index) => (
+                      <li key={`${car.id}-func-${index}`}>{func}</li>
+                    ))}
+                  </ul>
+                )}
               </ul>
             </div>
-            <h3 className="text-sm mb-2">{car?.description}</h3>
-            <h3 className="font-medium">Accessories and Functionalities:</h3>
+            <h3 className="font-medium">Description:</h3>
             <hr />
 
-            <ul className=" flex=row  gap-x-3 text-sm mb-10">
+            <h3 className="text-sm ">{car?.description}</h3>
+            <h3 className="font-medium mt-2">
+              Accessories and Functionalities:
+            </h3>
+            <hr />
+
+            <ul className=" flex=row  gap-x-3 text-sm mb-5">
               {car.accessories?.map((item, id) => (
                 <li key={id}>| {item} |</li>
               ))}
             </ul>
+
             <button className="btn  w-[150px]">
               <a href="tel:+380730000000">Rental car</a>
             </button>

@@ -10,18 +10,16 @@ import {
   selectLoadMore,
   selectPage,
   selectTotalPage,
+  totalPage,
 } from "../../redux/cars/slice";
 import {
   fetchCarsThunk,
   fetchFavoriteThunk,
 } from "../../redux/cars/operations";
-import { Modal } from "../../components/Modal/Modal";
 import { selectNameFilter } from "../../redux/filters/slice";
 import { LoadMore } from "../../components/LoadMore/LoadMore";
 
 export const Catalog = () => {
-  const [selectCar, setSelectCar] = useState(null);
-  const [isOpenModal, setIsOpenModal] = useState(false);
   const [showLoadMore, setShowLoadMore] = useState(false);
 
   const dispatch = useDispatch();
@@ -29,38 +27,40 @@ export const Catalog = () => {
   const make = useSelector(selectNameFilter);
 
   const page = useSelector(selectPage);
-  const totalPage = useSelector(selectTotalPage);
+  const summeryPage = useSelector(selectTotalPage);
   const isLoading = useSelector(selectLoading);
   const loadMore = useSelector(selectLoadMore);
 
   useEffect(() => {
     dispatch(fetchCarsThunk({ page, make })).then(() => {
-      setShowLoadMore(page < Math.ceil(totalPage / 12));
+      setShowLoadMore(page < Math.ceil(summeryPage / 12));
     });
-  }, [dispatch, page, make, totalPage]);
+  }, [dispatch, page, make, summeryPage]);
 
   useEffect(() => {
     dispatch(fetchFavoriteThunk());
   }, [dispatch]);
 
-  const handleModalOpen = (img) => {
-    setIsOpenModal(true);
-    setSelectCar(img);
-  };
-  const handleModalClose = () => {
-    setIsOpenModal(false);
-    setSelectCar(null);
-  };
+  // useEffect(() => {
+  //   if (page > 1) {
+  //     dispatch(totalPage());
+  //     const cardHeight = document.querySelector(".one_card")?.clientHeight || 0;
+  //     window.scrollBy({
+  //       top: cardHeight,
+  //       behavior: "smooth",
+  //     });
+  //   }
+  // }, [dispatch, page]);
+
   const handleClick = () => {
-    dispatch(nextPage()).then(() => {
+    dispatch(nextPage());
+    dispatch(totalPage());
+
+    dispatch(fetchCarsThunk({ page: page + 1, make })).then(() => {
+      const cardHeight = document.querySelector(".one_card")?.clientHeight || 0;
       setTimeout(() => {
-        const cardHeight =
-          document.querySelector(".one_card")?.clientHeight || 0;
-        window.scrollBy({
-          top: cardHeight,
-          behavior: "smooth",
-        });
-      }, 100);
+        window.scrollBy({ top: cardHeight, behavior: "smooth" });
+      }, 500);
     });
   };
 
@@ -70,22 +70,10 @@ export const Catalog = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <List
-          showLoadMore={showLoadMore}
-          cars={cars}
-          handleModalOpen={handleModalOpen}
-        />
+        <List showLoadMore={showLoadMore} cars={cars} />
       )}
 
       {loadMore && <LoadMore onClick={handleClick} />}
-
-      {isOpenModal && (
-        <Modal
-          modalIsOpen={isOpenModal}
-          closeModal={handleModalClose}
-          selectImg={selectCar}
-        />
-      )}
     </div>
   );
 };
