@@ -7,6 +7,7 @@ import {
   nextPage,
   selectFilteredMemo,
   selectLoading,
+  selectLoadMore,
   selectPage,
   selectTotalPage,
 } from "../../redux/cars/slice";
@@ -30,7 +31,7 @@ export const Catalog = () => {
   const page = useSelector(selectPage);
   const totalPage = useSelector(selectTotalPage);
   const isLoading = useSelector(selectLoading);
-  // const loadMore = useSelector(selectLoadMore);
+  const loadMore = useSelector(selectLoadMore);
 
   useEffect(() => {
     dispatch(fetchCarsThunk({ page, make })).then(() => {
@@ -51,7 +52,16 @@ export const Catalog = () => {
     setSelectCar(null);
   };
   const handleClick = () => {
-    dispatch(nextPage());
+    dispatch(nextPage()).then(() => {
+      setTimeout(() => {
+        const cardHeight =
+          document.querySelector(".one_card")?.clientHeight || 0;
+        window.scrollBy({
+          top: cardHeight,
+          behavior: "smooth",
+        });
+      }, 100);
+    });
   };
 
   return (
@@ -67,7 +77,7 @@ export const Catalog = () => {
         />
       )}
 
-      {showLoadMore && <LoadMore onClick={handleClick} />}
+      {loadMore && <LoadMore onClick={handleClick} />}
 
       {isOpenModal && (
         <Modal

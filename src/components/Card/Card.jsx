@@ -1,13 +1,22 @@
-import { LikeBtn } from "../LikeBtn/LikeBtn";
+import { useDispatch, useSelector } from "react-redux";
+import { selectFavorite } from "../../redux/cars/slice";
+import { LikeBtn, LikeFavBtn } from "../LikeBtn/LikeBtn";
 import { Modal } from "../Modal/Modal";
 
-export const Card = ({ car, handleModalOpen, key }) => {
+export const Card = ({ car, key }) => {
+  const favorites = useSelector(selectFavorite);
+  // const dispatch = useDispatch();
+
   return (
     <>
-      <li key={key}>
-        <div className="card bg-base-100 w-[350px] min-h-[550px]  shadow-xl">
+      <li key={key} className="one_card">
+        <div className="card  bg-base-100 w-[350px] min-h-[550px]  shadow-xl">
           <div className=" flex justify-end">
-            <LikeBtn car={car} />
+            {favorites.some((one) => one.id === car.id) ? (
+              <LikeFavBtn car={car} />
+            ) : (
+              <LikeBtn car={car} />
+            )}
           </div>
           <figure className="px-10 pt-10">
             <img
@@ -36,14 +45,6 @@ export const Card = ({ car, handleModalOpen, key }) => {
             </ul>
             <div className=" top-[465px] btn-warning card-actions absolute">
               <Modal car={car} />
-              {/* <button
-                onClick={() => {
-                  handleModalOpen(car);
-                }}
-                className="btn relative top-48 btn-warning"
-              >
-                Learn More
-              </button> */}
             </div>
           </div>
         </div>

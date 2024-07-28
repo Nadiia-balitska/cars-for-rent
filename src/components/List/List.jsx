@@ -1,11 +1,6 @@
-import { useDispatch } from "react-redux";
 import { Card } from "../Card/Card";
-import { LoadMore } from "../LoadMore/LoadMore";
-import { nextPage } from "../../redux/cars/slice";
 
-export const List = ({ showLoadMore, cars, handleModalOpen }) => {
-  const dispatch = useDispatch();
-
+export const List = ({ cars, handleModalOpen }) => {
   return (
     <div>
       <ul className="flex justify-center flex-row flex-wrap gap-x-[29px] gap-y-[50px] mt-5 mb-5 list_h">
@@ -13,7 +8,6 @@ export const List = ({ showLoadMore, cars, handleModalOpen }) => {
           <Card handleModalOpen={handleModalOpen} key={car.id} car={car} />
         ))}
       </ul>
-      {showLoadMore && <LoadMore onClick={() => dispatch(nextPage())} />}
     </div>
   );
 };

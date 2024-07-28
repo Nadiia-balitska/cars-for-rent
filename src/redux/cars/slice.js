@@ -13,7 +13,7 @@ const initialState = {
   error: null,
   favorites: [],
   totalPage: null,
-  loadMore: false,
+  loadMore: true,
 };
 
 const carsSlice = createSlice({
@@ -22,13 +22,15 @@ const carsSlice = createSlice({
 
   reducers: {
     like: (state, action) => {
-      const car = state.cars.find((car) => car.id === action.payload);
-      if (state.favorites.some((favCar) => favCar.id === car.id)) {
+      const car = state.favorites.some(
+        (favCar) => favCar.id === action.payload.id
+      );
+      if (car) {
         state.favorites = state.favorites.filter(
-          (favCar) => favCar.id !== car.id
+          (favCar) => favCar.id !== action.payload.id
         );
       } else {
-        state.favorites.push(car);
+        state.favorites.push(action.payload);
       }
     },
     nextPage: (state) => {
@@ -43,8 +45,19 @@ const carsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchCarsThunk.fulfilled, (state, action) => {
-        state.cars = action.payload;
+        // state.cars = [...state.cars, ...action.payload.cars];
+        // state.totalPage = action.payload.totalPage;
         state.loading = false;
+        // state.loadMore = state.page < state.totalPage;
+        if (action.payload.length > 0) {
+          state.cars =
+            state.page === 1
+              ? action.payload
+              : [...state.cars, ...action.payload];
+          state.loadMore = action.payload.length === 12;
+        } else {
+          state.loadMore = false;
+        }
       })
       .addCase(addFavoriteCarThunk.fulfilled, (state, action) => {
         state.favorites.push(action.payload);

@@ -9,6 +9,8 @@ export const fetchCarsThunk = createAsyncThunk(
         params: {
           page,
           limit: 12,
+
+          // orientation: "landscape",
         },
       });
       return data;
